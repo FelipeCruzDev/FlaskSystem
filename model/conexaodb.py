@@ -9,7 +9,7 @@ class Banco:
         self.passwd = password
         self.port = port
 
-    def conec(self):
+    def connec(self):
         try:
             self.con = psycopg2.connect(
                 database=self.database,
@@ -20,13 +20,19 @@ class Banco:
             )
             self.cur = self.con.cursor()
             print("Conexão bem-sucedida!")
+
         except psycopg2.Error as e:
             print("Erro ao conectar ao banco de dados:", e)
 
-# Exemplo de uso:
-# Criando uma instância da classe Banco
-banco = Banco()
+    def dml(self,sql,dados):
+        self.cur.execute(sql,dados)
+        self.con.commit()
+        self.fechar_conexao()
 
-# Chamando o método conec para conectar ao banco de dados
-banco.conec()
-
+    def fechar_conexao(self):
+        try:
+            self.cur.close()
+            self.con.close()
+            print("Conexão encerrada.")
+        except psycopg2.Error as e:
+            print("Erro ao fechar conexão:", e)
