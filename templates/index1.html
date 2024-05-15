@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Complexo</title>
+   /* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.menu ul {
+    background-color: #333;
+    list-style-type: none;
+    text-align: center;
+}
+
+.menu ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+}
+
+.menu ul li {
+    display: inline-block;
+    position: relative;
+}
+
+.menu ul li:hover > ul {
+    display: block;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu ul ul li {
+    width: 200px;
+    display: block;
+}
+
+.menu ul ul li a {
+    padding: 10px;
+}
+
+.menu ul ul ul {
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+
+    <style>
+
+
+
+    </style>
+</head>
+<body>
+    <nav class="menu">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a>
+                <ul>
+                    <li><a href="#">Equipe</a></li>
+                    <li><a href="#">História</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Serviços</a>
+                <ul>
+                    <li><a href="#">Web Design</a></li>
+                    <li><a href="#">Desenvolvimento Web</a></li>
+                    <li><a href="#">Marketing Digital</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Contato</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

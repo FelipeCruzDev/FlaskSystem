@@ -1,0 +1,97 @@
+/* Estilos para o menu */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+.menu ul {
+    list-style-type: none;
+}
+
+.menu ul ul {
+    display: none;
+    position: absolute;
+    background-color: #333;
+}
+
+.menu ul li {
+    position: relative;
+}
+
+.menu ul li:hover > ul {
+    display: block;
+}
+
+.menu ul ul li {
+    display: block;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+}
+
+/* Estilos para os produtos */
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.product img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Estilos para o carrinho */
+.cart {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.cart h2 {
+    margin-bottom: 10px;
+}
+
+.cart-items {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cart-items li {
+    margin-bottom: 5px;
+}
+
+.cart-total {
+    margin-top: 10px;
+}
+
+.checkout {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkout:hover {
+    background-color: #555;
+}

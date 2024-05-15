@@ -1,0 +1,53 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.menu ul {
+    background-color: #333;
+    list-style-type: none;
+    text-align: center;
+}
+
+.menu ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+}
+
+.menu ul li {
+    display: inline-block;
+    position: relative;
+}
+
+.menu ul li:hover > ul {
+    display: block;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu ul ul li {
+    width: 200px;
+    display: block;
+}
+
+.menu ul ul li a {
+    padding: 10px;
+}
+
+.menu ul ul ul {
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
