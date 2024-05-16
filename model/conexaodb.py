@@ -3,6 +3,8 @@ import psycopg2
 
 class Banco:
     def __init__(self, database="system", host="localhost", user="postgres", password="1234", port="5432"):
+        
+
         self.database = database
         self.host = host
         self.user = user
@@ -19,6 +21,7 @@ class Banco:
                 port=self.port
             )
             self.cur = self.con.cursor()
+
             print("Conexão bem-sucedida!")
 
         except psycopg2.Error as e:
@@ -29,6 +32,13 @@ class Banco:
         self.con.commit()
         self.fechar_conexao()
 
+    def select(self, consulta, parametros):
+        # Executa a consulta SQL e retorna os resultados usando fetchall()
+
+        self.cur.execute(consulta, parametros)
+        resultados = self.cur.fetchall()
+        return resultados
+
     def fechar_conexao(self):
         try:
             self.cur.close()
@@ -36,8 +46,9 @@ class Banco:
             print("Conexão encerrada.")
         except psycopg2.Error as e:
             print("Erro ao fechar conexão:", e)
+            
+            
 
-    def select(self, consultar, sqls):
-        pass
+  
 
 
