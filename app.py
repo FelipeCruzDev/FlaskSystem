@@ -23,7 +23,7 @@ def login():
 
         if resultado:
             # Login bem-sucedido, redirecione para a página principal
-            return redirect(url_for('index2'))
+            return redirect(url_for('inicio'))
         else:
             # Credenciais inválidas, exiba uma mensagem de erro
             return render_template('login.html', error='Credenciais inválidas. Tente novamente.')
@@ -31,10 +31,9 @@ def login():
     return render_template('login.html', error=None)
 
 
-
 @app.route('/inicio')
-def saude():
-    return render_template('index1.html')
+def inicio():
+    return render_template('inicio.html')
 
 @app.route("/saude")
 def site():
