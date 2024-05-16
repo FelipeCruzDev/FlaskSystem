@@ -38,5 +38,5 @@ def selecionar_usuario(username):
 
 
 selecionar_usuario("Felipe")
-def unauthorized(error):
-    return "Credenciais inválidas. Tente novamente.", 401
+#def unauthorized(error):
+    #return "Credenciais inválidas. Tente novamente.", 401

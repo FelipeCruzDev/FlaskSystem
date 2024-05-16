@@ -1,6 +1,5 @@
 from flask import Flask, render_template,url_for, request, redirect,abort
 from model.conexaodb import *
-
 import psycopg2
 import model
 
@@ -27,8 +26,8 @@ def login():
             return redirect(url_for('inicio'))
         else:
             # Credenciais inválidas, exiba uma mensagem de erro
-            abort(401)
-
+            #abort(401)
+            return render_template('login.html', error='Credenciais inválidas. Tente novamente.')
 
     return render_template('login.html', error=None)
 
