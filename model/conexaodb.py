@@ -36,3 +36,8 @@ class Banco:
             print("Conexão encerrada.")
         except psycopg2.Error as e:
             print("Erro ao fechar conexão:", e)
+
+    def select(self, consultar, sqls):
+        pass
+
+
