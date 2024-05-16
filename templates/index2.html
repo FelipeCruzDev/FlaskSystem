@@ -1,58 +1,32 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu de Compras Complexo</title>
-    <link rel="stylesheet" href="{{ url_for ('static', filename = 'styles3.css')}}"/>
+    <title>Página Inicial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Loja Online</h1>
-        <nav class="menu">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Produtos</a>
-                    <ul class="submenu">
-                        <li><a href="#">Eletrônicos</a></li>
-                        <li><a href="#">Roupas</a></li>
-                        <li><a href="#">Livros</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Carrinho</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <div class="container">
-        <div class="products">
-            <div class="product">
-                <img src="product1.jpg" alt="Produto 1">
-                <h3>Produto 1</h3>
-                <p>Descrição do Produto 1.</p>
-                <button class="add-to-cart" data-price="10.00">Adicionar ao Carrinho</button>
-            </div>
-            <div class="product">
-                <img src="product2.jpg" alt="Produto 2">
-                <h3>Produto 2</h3>
-                <p>Descrição do Produto 2.</p>
-                <button class="add-to-cart" data-price="20.00">Adicionar ao Carrinho</button>
-            </div>
-            <!-- Adicione mais produtos conforme necessário -->
-        </div>
-
-        <aside class="cart">
-            <h2>Carrinho</h2>
-            <ul class="cart-items">
-                <!-- Itens do carrinho serão adicionados dinamicamente com JavaScript -->
-            </ul>
-            <div class="cart-total">
-                <h3>Total: <span class="total-price">$0.00</span></h3>
-                <button class="checkout">Finalizar Compra</button>
-            </div>
-        </aside>
+        <h1>Bem-vindo à Página Inicial</h1>
+        <p>Esta é uma página inicial simples criada usando HTML.</p>
     </div>
-
-
 </body>
 </html>

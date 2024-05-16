@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-     <link rel="stylesheet" href="{{ url_for ('static', filename = 'styles.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-header">
             <h2>Login</h2>
         </div>
-        <form method = "POST">
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -31,20 +34,6 @@
             <span>Don't have an account? <a href="#">Sign up</a></span>
         </div>
     </div>
- <script>
-        // JavaScript/jQuery para exibir o modal de erro
-        function showErrorModal(message) {
-            var modal = document.getElementById("error-modal");
-            var errorMessage = document.getElementById("error-message");
-            errorMessage.textContent = message;
-            modal.style.display = "block";
-        }
-
-        // Fechar o modal quando o usuário clicar no botão de fechar
-        document.getElementsByClassName("close")[0].onclick = function() {
-            var modal = document.getElementById("error-modal");
-            modal.style.display = "none";
-        }
-    </script>
+    <script src="{{ url_for('static', filename='file.js') }}"></script>
 </body>
 </html>
