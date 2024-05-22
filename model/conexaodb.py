@@ -1,9 +1,8 @@
 # -*- coding: latin-1 -*-
 import psycopg2
-
 class Banco:
     def __init__(self, database="system", host="localhost", user="postgres", password="1234", port="5432"):
-        
+
 
         self.database = database
         self.host = host
@@ -23,6 +22,8 @@ class Banco:
             self.cur = self.con.cursor()
 
             print("Conexão bem-sucedida!")
+
+            return self.con  # Adiciona esta linha para retornar a conexão
 
         except psycopg2.Error as e:
             print("Erro ao conectar ao banco de dados:", e)
@@ -46,9 +47,12 @@ class Banco:
             print("Conexão encerrada.")
         except psycopg2.Error as e:
             print("Erro ao fechar conexão:", e)
-            
-            
 
-  
+    def fetchone(self):
+        pass
+
+
+
+
 
 

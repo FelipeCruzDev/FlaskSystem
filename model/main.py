@@ -38,19 +38,6 @@ def selecionar_usuario(username):
         print("Usuário não encontrado.")
         banco.fechar_conexao()
         return None
-def logar(username, password):
-    banco = Banco()
-    banco.connec()
-    consulta = "SELECT * FROM users WHERE username = %s AND senha = %s"
-    resultado = banco.select(consulta, (username, password))
-
-    if resultado == True:
-        return redirect(url_for('inicio'))
-    else:
-        return render_template('login.html', error='Credenciais inválidas. Tente novamente.')
-
-    banco.fechar_conexao()
-
 
 
 

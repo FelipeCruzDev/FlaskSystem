@@ -1,32 +1,50 @@
 import psycopg2
-from model.conexaodb import *
-from flask import Flask, render_template,url_for, request, redirect,abort
-import psycopg2
-import model
+from model.conexaodb import Banco
+from flask import Flask, render_template, url_for, request, redirect, abort
+import jwt
 
-def logar():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+SECRET_KEY = 'SECRET_KEY'
 
+
+class loginhandler:
+    def logar(self,username, password):
         # Aqui você precisa fazer a consulta ao banco de dados para verificar as credenciais
         banco = Banco()
-        banco.connec()
+        conn = banco.connec()  # Mudança: use 'connect' em vez de 'connec'
+        cur = conn.cursor()
         consulta = "SELECT * FROM users WHERE username = %s AND senha = %s"
-        resultado = banco.select(consulta, (username, password))
-        banco.fechar_conexao()
+        cur.execute(consulta, (username, password))
 
-        if resultado:
-            # Login bem-sucedido, redirecione para a página principal
-            return redirect(url_for('inicio'))
-        else:
-            # Credenciais inválidas, exiba uma mensagem de erro
-            #abort(401)
-            return render_template('login.html', error='Credenciais inválidas. Tente novamente.')
+        # Mudança: usar fetchone para obter o resultado da consulta
+        row = cur.fetchone()
 
-    return render_template('login.html', error=None)
+        # Mudança: adicionar manipulação de exceção para psycopg2.errors
+        try:
+            if row:
+                # Atribui os valores das colunas a variáveis individuais, se necessário
+                id = row[0]
+                username = row[1]
+
+                # Crie o token JWT com os dados do usuário
+                token = jwt.encode({
+                    'id': id,
+                    'username': username
+                }, SECRET_KEY, algorithm='HS256')  # Mudança: adicionei o algoritmo
+
+                # Retorna o ID do usuário e o token JWT
+                print(token,id)
+                return id, token
+
+            else:
+                # Falha no login
+                return None, None
+        except (IndexError, psycopg2.errors.UniqueViolation):
+            # Trata exceção para quando não há resultados ou violação única
+            return None, None
 
 
 def saude():
     return render_template('pages/saude.html')
+
+
 
