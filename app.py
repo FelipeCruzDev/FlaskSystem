@@ -7,6 +7,9 @@ from datetime import datetime, timedelta
 from functools import wraps
 import requests
 import jwt
+from model.main import Main
+
+
 
 
 app = Flask(__name__)
@@ -34,25 +37,36 @@ def generate_jwt_token(username):
     return token
 
 @app.route('/login',methods=['GET', 'POST'])
-
-
-
 def login():
-    error = None  # Inicialize a variável de erro como None
+    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user_id, token = loginhandler.logar("",username, password)
+        user_id, token = loginhandler.logar("", username, password)
         if token is not None:
-            payload = {'username': username}
-            token = jwt.encode(payload, SECRET_KEY)
-            response = make_response(redirect(url_for('inicio')))
-            response.set_cookie('jwt_token', token, httponly=True)
-            return response
-        else:
-            error = 'Credenciais inválidas. Tente novamente.'  # Defina a mensagem de erro
-    return render_template('login.html', error=error)  # Passe a variável de erro para o template
+            id = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            consulta = id.get('id')
 
+            main = Main()
+            id_dp = main.consulta_id_dp(consulta)
+
+            if isinstance(id_dp, list) and len(id_dp) == 1:
+                id_dp = id_dp[0]
+
+            departamento = main.consultar_dp(id_dp, consulta)
+
+            if departamento:
+                departamento_nome = departamento[0][0]  # Extrai o nome do departamento
+                payload = {'username': departamento_nome}  # Modifica o payload para passar o nome do departamento
+                token = jwt.encode(payload, SECRET_KEY)
+                response = make_response(redirect(url_for('inicio')))
+                response.set_cookie('jwt_token', token, httponly=True)
+                return response
+            else:
+                error = 'Departamento não encontrado para o usuário.'  # Defina a mensagem de erro
+        else:
+            error = 'Credenciais inválidas. Tente novamente.'
+    return render_template('login.html', error=error)
 
 
 @app.route('/inicio')
@@ -62,17 +76,30 @@ def inicio():
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             username = payload.get('username')
-            id = payload.get('id')
 
+            id = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            consulta = id.get('id')
+
+            main = Main()
+            id_dp = main.consulta_id_dp(consulta)
+
+            # Verifica se id_dp é uma lista com um único elemento e, em seguida, extrai o valor
+            if isinstance(id_dp, list) and len(id_dp) == 1:
+                id_dp = id_dp[0]
+
+            departamento = main.consultar_dp(id_dp, consulta)
+            print(departamento)
             if request.method == 'POST':
                 return jsonify({'message': 'Usuário autenticado com sucesso.'}), 200
             else:
+                print(departamento)
                 # Aqui você pode buscar informações do usuário no banco de dados
                 # utilizando o 'username' que foi obtido do token
                 user = payload['username']
                 if user:
+
                     return render_template('inicio.html',
-                                           username=username, id=id)
+                                           username=username)
             return render_template('inicio.html', error=None)
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             pass

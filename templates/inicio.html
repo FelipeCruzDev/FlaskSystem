@@ -1,21 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-</head>
-<body>
-    <div class="container">
-        <h1>Bem-vindo à Página Inicial</h1>
-        <p>Esta é uma página inicial simples criada usando Flask.</p>
-        <form action="/saude">
-            <button type="submit">Ir para a rota de saúde</button>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      <title>Cavaleiro Express</title>
+   </head>
+   <body>
+      <section class="header_container">
+         <header class="header">
+            <img src="{{ url_for('static', filename='imagens/logo_-_Copia_1.png') }}" alt="logo" />
+         </header>
+      </section>
+      <div class="categorias_container">
+         <ul id="categorias_list"></ul>
+         <li>
+            <ul>
+              {% if departamento %}
+                {{ departamento }}
+              {% else %}
+                {{ username }}
+              {% endif %}
+            </ul>
+            {% for categoria in categorias %}
+            <ul>
+               {{ categoria }}
 
-        </form>
-    </div>
-</body>
+            </ul>
+            {% endfor %}
+         </li>
+      </div>
+      <section class="buttons_container">
+         <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
+         <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
+      </section>
+      <script
+         type="module"
+         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+      ></script>
+      <script
+         nomodule
+         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+      ></script>
+      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
+   </body>
 </html>

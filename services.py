@@ -3,6 +3,7 @@ from model.conexaodb import Banco
 from flask import Flask, render_template, url_for, request, redirect, abort
 import jwt
 
+
 SECRET_KEY = 'SECRET_KEY'
 
 
@@ -32,7 +33,7 @@ class loginhandler:
                 }, SECRET_KEY, algorithm='HS256')  # Mudança: adicionei o algoritmo
 
                 # Retorna o ID do usuário e o token JWT
-                print(token,id)
+
                 return id, token
 
             else:
