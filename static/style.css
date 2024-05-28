@@ -37,7 +37,7 @@ body {
    text-align: center;
 }
 
-.categorias_container ul {
+#departamentos{
    font-weight: 600;
    color: white;
    display: flex;

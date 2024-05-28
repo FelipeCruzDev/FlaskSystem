@@ -25,6 +25,12 @@ SECRET_KEY = 'SECRET_KEY'
      :rtype: str
 """
 
+from flask import Flask, render_template, jsonify
+
+app = Flask(__name__)
+
+
+
 
 def generate_jwt_token(username):
     expiration = datetime.utcnow() + timedelta(days=1)
@@ -47,23 +53,12 @@ def login():
             id = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             consulta = id.get('id')
 
-            main = Main()
-            id_dp = main.consulta_id_dp(consulta)
+            payload = {'id': consulta}  # Modifica o payload para passar o nome do departamento
+            token = jwt.encode(payload, SECRET_KEY)
+            response = make_response(redirect(url_for('inicio')))
+            response.set_cookie('jwt_token', token, httponly=True)
+            return response
 
-            if isinstance(id_dp, list) and len(id_dp) == 1:
-                id_dp = id_dp[0]
-
-            departamento = main.consultar_dp(id_dp, consulta)
-
-            if departamento:
-                departamento_nome = departamento[0][0]  # Extrai o nome do departamento
-                payload = {'username': departamento_nome}  # Modifica o payload para passar o nome do departamento
-                token = jwt.encode(payload, SECRET_KEY)
-                response = make_response(redirect(url_for('inicio')))
-                response.set_cookie('jwt_token', token, httponly=True)
-                return response
-            else:
-                error = 'Departamento não encontrado para o usuário.'  # Defina a mensagem de erro
         else:
             error = 'Credenciais inválidas. Tente novamente.'
     return render_template('login.html', error=error)
@@ -75,31 +70,19 @@ def inicio():
     if token:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            username = payload.get('username')
-
-            id = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            consulta = id.get('id')
+            id = payload.get('id')
 
             main = Main()
-            id_dp = main.consulta_id_dp(consulta)
+            id_dp = main.consulta_id_dp(id)
 
-            # Verifica se id_dp é uma lista com um único elemento e, em seguida, extrai o valor
-            if isinstance(id_dp, list) and len(id_dp) == 1:
-                id_dp = id_dp[0]
-
-            departamento = main.consultar_dp(id_dp, consulta)
+            departamento = main.consultar_dp(id_dp[0], id)  # Aqui estamos pegando apenas o primeiro ID de departamento, assumindo que é o único
             print(departamento)
-            if request.method == 'POST':
-                return jsonify({'message': 'Usuário autenticado com sucesso.'}), 200
-            else:
-                print(departamento)
-                # Aqui você pode buscar informações do usuário no banco de dados
-                # utilizando o 'username' que foi obtido do token
-                user = payload['username']
-                if user:
 
-                    return render_template('inicio.html',
-                                           username=username)
+            user = payload['id']
+
+            if user:
+                print(departamento)
+                return render_template('inicio.html', id=id, departamento=departamento)
             return render_template('inicio.html', error=None)
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             pass

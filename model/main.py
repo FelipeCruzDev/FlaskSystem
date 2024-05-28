@@ -47,18 +47,25 @@ class Main:
 
             if acesso_total:  # Verifica se a consulta retornou algum resultado
                 if acesso_total[0][0]:  # Verifica se o acesso total está definido como True
-                    # Se o usuário tem acesso total, retorna a lista completa de departamentos
+                    # Se o usuário tem acesso total, retorna apenas os nomes dos departamentos
                     consultar_departamentos = "SELECT nomedepartamento FROM departamento"
                     lista_departamentos = self.banco.select(consultar_departamentos, ())
-                    print(lista_departamentos)
+
+                    # Extrai apenas os nomes dos departamentos da lista de tuplas
+
                     return lista_departamentos
+                    print("Lista de departamentos completa:", nomes_departamentos)
+                     # Retorna a lista de nomes dos departamentos
                 else:
                     # Se o usuário não tem acesso total, retorna apenas o departamento vinculado ao seu ID
                     consultar_departamento_usuario = "SELECT nomedepartamento FROM departamento WHERE id = %s"
                     sqls_departamento_usuario = (id_dp,)
                     departamento_usuario = self.banco.select(consultar_departamento_usuario, sqls_departamento_usuario)
-                    return departamento_usuario
+                    print("Lista de departamentos do usuário:", departamento_usuario)
+                    return departamento_usuario  # Retorna a lista de tuplas sem descompactar
             else:
-                return "Usuário não encontrado."
+                return "Usuário não encontrado."  # Retorne uma mensagem de erro
         else:
-            return "ID de usuário inválido."
+            return "ID de usuário inválido."  # Retorne uma mensagem de erro
+
+
