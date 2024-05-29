@@ -14,37 +14,29 @@
          </header>
       </section>
       <div class="categorias_container">
-    <ul id="categorias_list"></ul>
-    <li>
-
+         <ul id="categorias_list"></ul>
+         <li>
             {% if departamento %}
                 {% for dept in departamento %}
                     <div id="departamentos">{{ dept[0] }}</div>
-
                 {% endfor %}
             {% else %}
                 <!-- Adicione uma mensagem caso não haja departamentos -->
                 <div>Nenhum departamento encontrado.</div>
             {% endif %}
-
-    </li>
-</div>
+         </li>
+      </div>
 
       <section class="buttons_container">
          <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
          <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
       </section>
-      <script
-         src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script
-         type="module"
-         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-      ></script>
-      <script
-         nomodule
-         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-      ></script>
-      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
 
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
    </body>
 </html>

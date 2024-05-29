@@ -66,6 +66,60 @@ class Main:
             else:
                 return "Usuário não encontrado."  # Retorne uma mensagem de erro
         else:
+            return "ID de usuário inválido."  # Retorne uma mensagem de errodef consultar_dp(self, id_dp, id_user):
+        if id_user:  # Verifica se o id do usuário não está vazio ou None
+            # Construa a consulta SQL para verificar o acesso total do usuário
+            consultar_acesso = "SELECT acesso_total FROM users WHERE id = %s"
+            sqls_acesso = (id_user,)
+            acesso_total = self.banco.select(consultar_acesso, sqls_acesso)
+
+            if acesso_total:  # Verifica se a consulta retornou algum resultado
+                if acesso_total[0][0]:  # Verifica se o acesso total está definido como True
+                    # Se o usuário tem acesso total, retorna apenas os nomes dos departamentos
+                    consultar_departamentos = "SELECT nomedepartamento FROM departamento"
+                    lista_departamentos = self.banco.select(consultar_departamentos, ())
+
+                    # Extrai apenas os nomes dos departamentos da lista de tuplas
+
+                    return lista_departamentos
+                    print("Lista de departamentos completa:", nomes_departamentos)
+                     # Retorna a lista de nomes dos departamentos
+                else:
+                    # Se o usuário não tem acesso total, retorna apenas o departamento vinculado ao seu ID
+                    consultar_departamento_usuario = "SELECT nomedepartamento FROM departamento WHERE id = %s"
+                    sqls_departamento_usuario = (id_dp,)
+                    departamento_usuario = self.banco.select(consultar_departamento_usuario, sqls_departamento_usuario)
+                    print("Lista de departamentos do usuário:", departamento_usuario)
+                    return departamento_usuario  # Retorna a lista de tuplas sem descompactar
+            else:
+                return "Usuário não encontrado."  # Retorne uma mensagem de erro
+        else:
             return "ID de usuário inválido."  # Retorne uma mensagem de erro
 
+    def consultar_topicos(self, id_departamento):
+        # Construa a consulta SQL para obter os tópicos vinculados ao departamento
+        consultar_topicos_departamento = "SELECT topico FROM topicos WHERE departamento_id = %s"
+        sqls_topicos_departamento = (id_departamento,)
+        topicos_departamento = self.banco.select(consultar_topicos_departamento, sqls_topicos_departamento)
+
+        if topicos_departamento:  # Verifica se a consulta retornou algum resultado
+            # Retorna a lista de tópicos vinculados ao departamento
+            print(topicos_departamento)
+            return topicos_departamento
+        else:
+            return "Não há tópicos vinculados a este departamento."  # Retorna uma mensagem de erro
+
+    def consulta_id_departamento_topico(self, setornome):
+        # Construa a consulta SQL para obter o tópico vinculado ao departamento
+        consulta_id_topico = """SELECT id FROM departamento WHERE nomedepartamento = %s """
+        sqls_topicos_departamento = (setornome,)
+        topicos_departamento = self.banco.select(consulta_id_topico, sqls_topicos_departamento)
+
+        if topicos_departamento:  # Verifica se a consulta retornou algum resultado
+            # Retorna apenas o número do tópico vinculado ao departamento
+            id_topico = topicos_departamento[0][0]
+            print(id_topico)
+            return id_topico
+        else:
+            return "Não há tópicos vinculados a este departamento."  # Retorna uma mensagem de erro
 

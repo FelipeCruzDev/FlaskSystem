@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, redirect, make_respo
 from model.conexaodb import *
 import psycopg2
 import model
+import re
 from services import*
 from datetime import datetime, timedelta
 from functools import wraps
@@ -76,17 +77,37 @@ def inicio():
             id_dp = main.consulta_id_dp(id)
 
             departamento = main.consultar_dp(id_dp[0], id)  # Aqui estamos pegando apenas o primeiro ID de departamento, assumindo que é o único
-            print(departamento)
+
 
             user = payload['id']
 
             if user:
                 print(departamento)
-                return render_template('inicio.html', id=id, departamento=departamento)
+                return render_template('inicio.html', id=id, departamento=departamento,id_dp=id_dp)
             return render_template('inicio.html', error=None)
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             pass
     return render_template('login.html', error=None)
+
+
+@app.route('/topicos',methods=['GET', 'POST'])
+def topicos():
+    if request.method == 'POST':
+        setor = request.form.get('setor')
+        main = Main()
+        id_dp= main.consulta_id_departamento_topico(setor)
+
+
+        topicos = main.consultar_topicos(id_dp)
+
+
+        print(f"Setor recebido: {setor}", topicos)
+        # Aqui você pode adicionar o código para processar os dados do setor
+        return 'Dados do setor recebidos com sucesso'
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 
 @app.route("/saude")
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      <title>Cavaleiro Express</title>
+   </head>
+   <body>
+      <section class="header_container">
+         <header class="header">
+            <img src="{{ url_for('static', filename='imagens/logo_-_Copia_1.png') }}" alt="logo" />
+         </header>
+      </section>
+      <div class="categorias_container">
+         <ul id="categorias_list">
+            {% for topico in topicos %}
+               <li>
+                  <div id="topico">{{ topico.nome }}</div>
+               </li>
+            {% endfor %}
+         </ul>
+         {% if not topicos %}
+            <!-- Adicione uma mensagem caso não haja tópicos -->
+            <div>NENHUM TÓPICO ENCONTRADO.</div>
+         {% endif %}
+      </div>
+
+      <section class="buttons_container">
+         <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
+         <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
+      </section>
+
+      <!-- Modal -->
+      <div id="myModal" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <form class="form">
+               <div class="div_setor">
+                  <label for="setor">Setor:</label>
+                  <input type="text" id="setor" name="setor" readonly>
+               </div>
+               <div>
+                  <label for="file">Enviar foto:</label>
+                  <input type="file" id="file" name="file" required>
+               </div>
+               <div>
+                  <label for="text">Descrição do problema:</label>
+                  <textarea name="descricao" id="descricao"></textarea>
+               </div>
+               <div class="div_check">
+                  <label for="check">Está tudo certo?</label>
+                  <input type="checkbox" id="check" name="check">
+               </div>
+               <button type="submit">Enviar</button>
+            </form>
+         </div>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+   </body>
+</html>
