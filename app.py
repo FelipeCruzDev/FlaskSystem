@@ -90,25 +90,43 @@ def inicio():
     return render_template('login.html', error=None)
 
 
-@app.route('/topicos',methods=['GET', 'POST'])
-def topicos():
-    if request.method == 'POST':
-        setor = request.form.get('setor')
-        main = Main()
-        id_dp= main.consulta_id_departamento_topico(setor)
+def verificar_permissao_usuario(id_usuario, setor):
+    main = Main()
+    id_dp = main.consulta_id_departamento_topico(setor)
+    if id_dp:
+        departamento_usuario = main.consultar_dp(id_dp, id_usuario)
+        if departamento_usuario and setor in [dp[0] for dp in departamento_usuario]:
+            return True
+    return False
 
+@app.route('/topicos/<setor>', methods=['GET', 'POST'])
+def topicos(setor):
+    token = request.cookies.get('jwt_token')
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            id_usuario = payload.get('id')
 
-        topicos = main.consultar_topicos(id_dp)
-
-
-        print(f"Setor recebido: {setor}", topicos)
-        # Aqui você pode adicionar o código para processar os dados do setor
-        return 'Dados do setor recebidos com sucesso'
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
+            # Verifique se o usuário tem permissão para acessar o setor
+            if verificar_permissao_usuario(id_usuario, setor):
+                if request.method == 'POST':
+                    main = Main()
+                    id_dp = main.consulta_id_departamento_topico(setor)
+                    topicos = main.consultar_topicos(id_dp)
+                    print(f"Setor recebido: {setor}", topicos)
+                    return render_template('topicos.html', topicos=topicos)
+                else:
+                    main = Main()
+                    id_dp = main.consulta_id_departamento_topico(setor)
+                    topicos = main.consultar_topicos(id_dp)
+                    print(f"Setor recebido: {setor}", topicos)
+                    return render_template('topicos.html', topicos=topicos)
+            else:
+                # Se o usuário não tiver permissão, redirecione para uma página de acesso negado
+                return render_template('acesso_negado.html')
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            return redirect(url_for('login'))
+    return redirect(url_for('login'))
 @app.route("/saude")
 
 def saude ():

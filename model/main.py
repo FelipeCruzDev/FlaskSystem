@@ -97,29 +97,30 @@ class Main:
             return "ID de usuário inválido."  # Retorne uma mensagem de erro
 
     def consultar_topicos(self, id_departamento):
-        # Construa a consulta SQL para obter os tópicos vinculados ao departamento
-        consultar_topicos_departamento = "SELECT topico FROM topicos WHERE departamento_id = %s"
-        sqls_topicos_departamento = (id_departamento,)
-        topicos_departamento = self.banco.select(consultar_topicos_departamento, sqls_topicos_departamento)
+        try:
+            # Consulta SQL para obter os tópicos vinculados ao departamento
+            consultar_topicos_departamento = "SELECT topico FROM topicos WHERE departamento_id = %s"
+            sqls_topicos_departamento = (id_departamento,)
+            topicos_departamento = self.banco.select(consultar_topicos_departamento, sqls_topicos_departamento)
 
-        if topicos_departamento:  # Verifica se a consulta retornou algum resultado
-            # Retorna a lista de tópicos vinculados ao departamento
-            print(topicos_departamento)
+
             return topicos_departamento
-        else:
-            return "Não há tópicos vinculados a este departamento."  # Retorna uma mensagem de erro
 
-    def consulta_id_departamento_topico(self, setornome):
-        # Construa a consulta SQL para obter o tópico vinculado ao departamento
-        consulta_id_topico = """SELECT id FROM departamento WHERE nomedepartamento = %s """
-        sqls_topicos_departamento = (setornome,)
-        topicos_departamento = self.banco.select(consulta_id_topico, sqls_topicos_departamento)
+        except Exception as e:
+            return f"Erro ao consultar tópicos: {str(e)}"
 
-        if topicos_departamento:  # Verifica se a consulta retornou algum resultado
-            # Retorna apenas o número do tópico vinculado ao departamento
-            id_topico = topicos_departamento[0][0]
-            print(id_topico)
-            return id_topico
-        else:
-            return "Não há tópicos vinculados a este departamento."  # Retorna uma mensagem de erro
+    def consulta_id_departamento_topico(self, setor_nome):
+        try:
+            # Consulta SQL para obter o ID do departamento vinculado ao setor
+            consulta_id_departamento = """SELECT id FROM departamento WHERE nomedepartamento = %s"""
+            sqls_id_departamento = (setor_nome,)
+            departamento_id = self.banco.select(consulta_id_departamento, sqls_id_departamento)
+
+            if departamento_id:
+                # Retorna apenas o número do departamento vinculado ao setor
+                return departamento_id[0][0]
+            else:
+                return None  # Retorna None se não houver departamento vinculado ao setor
+        except Exception as e:
+            return f"Erro ao consultar ID do departamento: {str(e)}"
 
