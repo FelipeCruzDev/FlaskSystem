@@ -18,7 +18,8 @@
          <li>
             {% if departamento %}
                 {% for dept in departamento %}
-                    <div id="departamentos",id>{{ dept[0] }}</div>
+                    <!-- Use um link para redirecionar para a rota /topicos/<setor> -->
+                    <a href="/topicos/{{ dept[0] }}"  id="departamentos">{{ dept[0] }}</a>
                 {% endfor %}
             {% else %}
                 <!-- Adicione uma mensagem caso não haja departamentos -->
@@ -31,12 +32,13 @@
          <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
          <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
       </section>
-
-
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
-      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-      <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-      <script src="{{ url_for('static', filename='categorias.js') }}"></script>
+         <script
+         type="module"
+         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+      ></script>
+      <script
+         nomodule
+         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+      ></script>
    </body>
 </html>

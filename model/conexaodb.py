@@ -33,6 +33,14 @@ class Banco:
         self.con.commit()
         self.fechar_conexao()
 
+    def select_one(self, consulta, parametros):
+        """
+        Executa a consulta SQL e retorna apenas a primeira linha de resultado.
+        """
+        self.cur.execute(consulta, parametros)
+        resultado = self.cur.fetchone()
+        return resultado
+
     def select(self, consulta, parametros):
         # Executa a consulta SQL e retorna os resultados usando fetchall()
 

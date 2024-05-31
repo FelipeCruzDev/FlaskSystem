@@ -90,14 +90,33 @@ def inicio():
     return render_template('login.html', error=None)
 
 
+
+
+
 def verificar_permissao_usuario(id_usuario, setor):
-    main = Main()
-    id_dp = main.consulta_id_departamento_topico(setor)
-    if id_dp:
-        departamento_usuario = main.consultar_dp(id_dp, id_usuario)
-        if departamento_usuario and setor in [dp[0] for dp in departamento_usuario]:
-            return True
-    return False
+    main = Main()  # Supondo que Main() seja uma classe que gerencia conexão com o banco de dados
+
+    # Consulta ao banco de dados para verificar se o usuário tem acesso total
+    consultar_acesso_total = "SELECT COUNT(*) FROM users WHERE id = %s AND acesso_total = true"
+    sqls_acesso_total = (id_usuario,)
+    resultado_acesso_total = main.banco.select_one(consultar_acesso_total, sqls_acesso_total)
+
+    # Verifica se o resultado da consulta de acesso total é maior que zero, o que indica que o usuário tem acesso total
+    if resultado_acesso_total and resultado_acesso_total[0] > 0:
+        return True  # Se o usuário tem acesso total, retorna True
+
+    # Consulta ao banco de dados para verificar se o setor existe e se o usuário tem permissão para acessá-lo
+    consultar_departamento_usuario = "SELECT COUNT(*) FROM users WHERE id = %s AND departamento_id IN (SELECT id FROM departamento WHERE nomedepartamento = %s)"
+    sqls_departamento_usuario = (id_usuario, setor)
+    resultado = main.banco.select_one(consultar_departamento_usuario, sqls_departamento_usuario)
+
+    # Verifica se o resultado da consulta é maior que zero, o que indica que o usuário tem permissão para acessar o setor
+    if resultado and resultado[0] > 0:
+        return True  # Retorna True se o usuário tem permissão para acessar o setor
+    else:
+        return False  # Retorna False se o usuário não tem permissão para acessar o setor
+
+
 
 @app.route('/topicos/<setor>', methods=['GET', 'POST'])
 def topicos(setor):
@@ -107,20 +126,20 @@ def topicos(setor):
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             id_usuario = payload.get('id')
 
-            # Verifique se o usuário tem permissão para acessar o setor
+            # Verifica se o usuário tem permissão para acessar o setor
             if verificar_permissao_usuario(id_usuario, setor):
+                main = Main()
+                id_dp = main.consulta_id_departamento_topico(setor)
+                topicos = main.consultar_topicos(id_dp)
+
                 if request.method == 'POST':
-                    main = Main()
-                    id_dp = main.consulta_id_departamento_topico(setor)
-                    topicos = main.consultar_topicos(id_dp)
+                    # Lidar com a lógica do método POST
                     print(f"Setor recebido: {setor}", topicos)
-                    return render_template('topicos.html', topicos=topicos)
                 else:
-                    main = Main()
-                    id_dp = main.consulta_id_departamento_topico(setor)
-                    topicos = main.consultar_topicos(id_dp)
+                    # Lidar com a lógica do método GET
                     print(f"Setor recebido: {setor}", topicos)
-                    return render_template('topicos.html', topicos=topicos)
+
+                return render_template('topicos.html', topicos=topicos)
             else:
                 # Se o usuário não tiver permissão, redirecione para uma página de acesso negado
                 return render_template('acesso_negado.html')

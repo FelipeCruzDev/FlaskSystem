@@ -21,9 +21,9 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 // Obtém todos os itens da lista
-var ulItems = document.querySelectorAll("#departamentos");
+var ulItems = document.querySelectorAll("#topicos");
 function enviarSetorParaTopicos() {
-    var setor = document.getElementById("setor").value;
+    var setor = document.getElementById("cklist").value;
     // Cria um objeto FormData e adiciona o setor como um parâmetro
     var formData = new FormData();
     formData.append('setor', setor);
@@ -34,10 +34,10 @@ ulItems.forEach(function (item) {
    item.addEventListener("click", function () {
       // Define o nome do setor no modal
 
-    var setor = document.getElementById("setor").value = this.innerText.trim();
+    var setor = document.getElementById("cklist").value = this.innerText.trim();
     // Cria um objeto FormData e adiciona o setor como um parâmetro
     var formData = new FormData();
-    formData.append('setor', setor);
+    formData.append('cklist', setor);
 
     // Faz uma requisição AJAX usando fetch
     fetch('/topicos', {
