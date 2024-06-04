@@ -59,8 +59,3 @@ class Banco:
     def fetchone(self):
         pass
 
-
-
-
-
-

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, request, redirect, make_response, flash, make_response, jsonify
+from flask import Flask, render_template, url_for, request, redirect, make_response, flash, make_response, jsonify, \
+    session
 from model.conexaodb import *
 import psycopg2
 import model
@@ -29,19 +30,6 @@ SECRET_KEY = 'SECRET_KEY'
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
-
-
-
-
-def generate_jwt_token(username):
-    expiration = datetime.utcnow() + timedelta(days=1)
-    payload = {
-        'id': id,
-        'username': username,
-        'exp': expiration,
-    }
-    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-    return token
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
@@ -119,25 +107,27 @@ def verificar_permissao_usuario(id_usuario, setor):
 
 
 @app.route('/topicos/<setor>', methods=['GET', 'POST'])
-def topicos(setor):
+def topicos(setor,):
     token = request.cookies.get('jwt_token')
     if token:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             id_usuario = payload.get('id')
-
             # Verifica se o usuário tem permissão para acessar o setor
             if verificar_permissao_usuario(id_usuario, setor):
                 main = Main()
                 id_dp = main.consulta_id_departamento_topico(setor)
                 topicos = main.consultar_topicos(id_dp)
-
                 if request.method == 'POST':
                     # Lidar com a lógica do método POST
                     print(f"Setor recebido: {setor}", topicos)
                 else:
                     # Lidar com a lógica do método GET
                     print(f"Setor recebido: {setor}", topicos)
+
+                   # checklist = main.Consulta_checklist(id_usuario,id_topico)
+                    #print(checklist)
+
 
                 return render_template('topicos.html', topicos=topicos)
             else:
@@ -146,7 +136,23 @@ def topicos(setor):
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             return redirect(url_for('login'))
     return redirect(url_for('login'))
-@app.route("/saude")
+
+
+@app.route("/saude" , methods=['GET', 'POST'] )
+
+def saude ():
+    token = request.cookies.get('jwt_token')
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            username = payload.get('username')
+            user_id = payload.get('id')
+            # Aqui você pode implementar lógica adicional para a rota de "/saude"
+            return render_template('saude.html', username=username, id=user_id)
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            pass
+    return render_template('login.html', error=None)
+@app.route("/get_checklist")
 
 def saude ():
     token = request.cookies.get('jwt_token')

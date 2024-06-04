@@ -51,7 +51,9 @@ body {
    text-decoration: none;
 
 }
-
+#id_topico{
+    display:none;
+}
 #topicos {
    font-weight: 600;
    color: white;

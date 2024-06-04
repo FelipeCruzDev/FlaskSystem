@@ -8,12 +8,14 @@ var ulItems = document.querySelectorAll("#topicos");
 
 // Adiciona evento de clique para cada item da lista
 ulItems.forEach(function (item) {
-   item.addEventListener("click", function () {
-      // Define o nome do setor no modal
-      document.getElementById("setor").value = this.innerText.trim();
-      // Exibe o modal
-      modal.style.display = "block";
-   });
+    item.addEventListener("click", function () {
+        // Obtém o ID do tópico
+        var idTopico = this.querySelector("#id_topico").innerText;
+        // Define o ID do tópico no campo de entrada com o ID "idsetor"
+        document.getElementById("idsetor").value = idTopico;
+        // Exibe o modal
+        modal.style.display = "block";
+    });
 });
 
 // Quando o usuário clicar no <span> (x), fecha o modal

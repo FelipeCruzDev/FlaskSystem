@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-   <meta charset="UTF-8" />
-   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-   <title>Cavaleiro Express</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Cavaleiro Express</title>
 </head>
 <body>
-   <section class="header_container">
-      <header class="header">
-         <img src="{{ url_for('static', filename='imagens/logo_-_Copia_1.png') }}" alt="logo" />
-      </header>
-   </section>
-   <div class="categorias_container">
-      <ul id="categorias_list">
-         {% if topicos %}
-            {% for topico in topicos %}
-               <li>
-                  <div id="topicos">{{ topico[0] }}</div>
-               </li>
-            {% endfor %}
-         {% else %}
-            <!-- Adicione uma mensagem caso não haja departamentos -->
-            <li>
-               <div>Nenhum departamento encontrado.</div>
-            </li>
-         {% endif %}
-      </ul>
-   </div>
+    <section class="header_container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='imagens/logo_-_Copia_1.png') }}" alt="logo" />
+        </header>
+    </section>
+    <div class="categorias_container">
+        <ul id="categorias_list">
+            {% if topicos %}
+                {% for topico in topicos %}
+                    <li>
+                        <div id="topicos" data-department-id="{{ topico[1] }}">{{ topico[1] }}
+                        <div id="id_topico">{{ topico[0] }}</div>
+                        </div>
 
-   <section class="buttons_container">
-      <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
-      <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
-   </section>
 
-   <!-- Modal -->
-       <div id="myModal" class="modal">
-         <div class="modal-content">
+
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>
+                    <div>Nenhum departamento encontrado.</div>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    <section class="buttons_container">
+        <button class="btn1"><ion-icon name="home-outline"></ion-icon></button>
+        <button class="btn2"><ion-icon name="bar-chart-outline"></ion-icon></button>
+    </section>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
             <span class="close">&times;</span>
             <form class="form">
-               <div class="div_setor">
-                  <label for="setor">Setor:</label>
-                  <input type="text" id="setor" name="setor" readonly>
-
-               </div>
-               <div>
-                  <label for="file">Enviar foto:</label>
-                  <input type="file" id="file" name="file" required>
-
-               </div>
-               <div>
-                  <label for="text">Descrição do problema:</label>
-                  <textarea name="" id=""></textarea>
-
-               </div>
-               <div class="div_check">
-                  <label for="check">Está tudo certo?</label>
-                  <input type="checkbox" id="check" name="check">
-
-               </div>
-               <button type="submit">Enviar</button>
+                <div class="div_setor">
+                    <label for="setor">Setor:</label>
+                    <input  id="idsetor">ID: </input>
+                    <input type="text" id="setor" name="setor" readonly>
+                </div>
+                <div class="checklist-container">
+                    <label>Checklist:</label>
+                    <ul id="checklist">
+                        <!-- Os itens do checklist serão gerados dinamicamente aqui -->
+                    </ul>
+                </div>
+                <div>
+                    <label for="file">Enviar foto:</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <div>
+                    <label for="text">Descrição do problema:</label>
+                    <textarea name="descricao" id="descricao"></textarea>
+                </div>
+                <div class="div_check">
+                    <label for="check">Está tudo certo?</label>
+                    <input type="checkbox" id="check" name="check">
+                </div>
+                <button type="submit">Enviar</button>
             </form>
-         </div>
-      </div>
+        </div>
+    </div>
 
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="{{ url_for('static', filename='topicos.js') }}"></script>
-   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='topicos.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

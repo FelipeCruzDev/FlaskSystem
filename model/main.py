@@ -99,9 +99,19 @@ class Main:
     def consultar_topicos(self, id_departamento):
         try:
             # Consulta SQL para obter os tópicos vinculados ao departamento
-            consultar_topicos_departamento = "SELECT topico FROM topicos WHERE departamento_id = %s"
+            consultar_topicos_departamento = "SELECT id,topico FROM topicos WHERE departamento_id = %s"
             sqls_topicos_departamento = (id_departamento,)
             topicos_departamento = self.banco.select(consultar_topicos_departamento, sqls_topicos_departamento)
+            if topicos_departamento:
+                conexoes = []
+                for row in topicos_departamento:
+                    conexao = {
+                        'id': row[0],
+                        'topico': row[1]
+                    }
+                    conexoes.append(conexao)
+
+                print (conexoes )
 
 
             return topicos_departamento
@@ -123,4 +133,12 @@ class Main:
                 return None  # Retorna None se não houver departamento vinculado ao setor
         except Exception as e:
             return f"Erro ao consultar ID do departamento: {str(e)}"
+
+    def Consulta_checklist(self,user_id,id_topico):
+        # Consulta a pergunta da tabela checklist, com filtro no User_id
+        consulta = "SELECT pergunta FROM checklist WHERE id_topico AND user_id = %s"
+        parametros = (id_topico,user_id)
+        checklist = self.banco.select(consulta, parametros)
+        print(checklist)
+        return checklist
 
