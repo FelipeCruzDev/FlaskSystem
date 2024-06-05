@@ -18,12 +18,10 @@
             {% if topicos %}
                 {% for topico in topicos %}
                     <li>
-                        <div id="topicos" data-department-id="{{ topico[1] }}">{{ topico[1] }}
-                        <div id="id_topico">{{ topico[0] }}</div>
+                        <div id="topicos" data-department-id="{{ topico[1] }}">
+                            {{ topico[1] }}
+                            <div id="id_topico">{{ topico[0] }}</div>
                         </div>
-
-
-
                     </li>
                 {% endfor %}
             {% else %}
@@ -45,7 +43,7 @@
             <form class="form">
                 <div class="div_setor">
                     <label for="setor">Setor:</label>
-                    <input  id="idsetor">ID: </input>
+                    <input id="idsetor" readonly> ID: </input>
                     <input type="text" id="setor" name="setor" readonly>
                 </div>
                 <div class="checklist-container">
@@ -59,7 +57,7 @@
                     <input type="file" id="file" name="file" required>
                 </div>
                 <div>
-                    <label for="text">Descrição do problema:</label>
+                    <label for="descricao">Descrição do problema:</label>
                     <textarea name="descricao" id="descricao"></textarea>
                 </div>
                 <div class="div_check">
@@ -70,9 +68,12 @@
             </form>
         </div>
     </div>
-
+    <script>
+        var idUsuario = {{ id_usuario }};
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='topicos.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

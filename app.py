@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, redirect, make_respo
     session
 from model.conexaodb import *
 import psycopg2
+from flask_cors import CORS
 import model
 import re
 from services import*
@@ -12,9 +13,8 @@ import jwt
 from model.main import Main
 
 
-
-
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'SECRET_KEY'
 
 SECRET_KEY = 'SECRET_KEY'
@@ -30,6 +30,34 @@ SECRET_KEY = 'SECRET_KEY'
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
+
+
+@app.route('/checklist/<int:id_topico>', methods=['GET'])
+def get_checklist(id_topico):
+    try:
+        # Obter o id_usuario dos parâmetros de consulta
+        id_usuario = request.args.get('id_usuario')
+
+        if not id_usuario:
+            print("ID do usuário não fornecido")
+            return jsonify({'error': 'ID do usuário não fornecido.'}), 400
+
+        print(f"ID Usuario: {id_usuario}, Topic ID: {id_topico}")  # Log para depuração
+
+        main = Main()
+        checklist = main.Consulta_checklist(id_usuario, id_topico)  # Usando id_usuario na consulta
+        print(f"Checklist antes da transformação: {checklist}")  # Log para depuração
+
+        if checklist:
+            # Transformando a lista de tuplas em uma lista simples
+            checklist_simples = [item[0] for item in checklist]
+            return jsonify({'checklist': checklist_simples})
+        else:
+            print("Nenhum checklist encontrado para este tópico.")
+            return jsonify({'error': 'Nenhum checklist encontrado para este tópico.'}), 404
+    except Exception as e:
+        print(f"Erro: {e}")  # Log de erro
+        return jsonify({'error': 'Erro no servidor.'}), 500
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
@@ -129,7 +157,7 @@ def topicos(setor,):
                     #print(checklist)
 
 
-                return render_template('topicos.html', topicos=topicos)
+                return render_template('topicos.html', topicos=topicos, id_usuario=id_usuario)
             else:
                 # Se o usuário não tiver permissão, redirecione para uma página de acesso negado
                 return render_template('acesso_negado.html')
@@ -152,7 +180,7 @@ def saude ():
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             pass
     return render_template('login.html', error=None)
-@app.route("/get_checklist")
+
 
 def saude ():
     token = request.cookies.get('jwt_token')

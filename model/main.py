@@ -134,11 +134,9 @@ class Main:
         except Exception as e:
             return f"Erro ao consultar ID do departamento: {str(e)}"
 
-    def Consulta_checklist(self,user_id,id_topico):
-        # Consulta a pergunta da tabela checklist, com filtro no User_id
-        consulta = "SELECT pergunta FROM checklist WHERE id_topico AND user_id = %s"
-        parametros = (id_topico,user_id)
-        checklist = self.banco.select(consulta, parametros)
-        print(checklist)
-        return checklist
 
+    def Consulta_checklist(self, user_id, id_topico):
+        consulta = "SELECT pergunta FROM checklist WHERE id_topico = %s AND user_id = %s"
+        parametros = (id_topico, user_id)
+        checklist = self.banco.select(consulta, parametros)
+        return checklist
