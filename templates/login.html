@@ -1,39 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Página de Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Login</h2>
+    <div class="container">
+        <div class="background-images">
+            <img src="https://play-lh.googleusercontent.com/JSFZ1mgcRyTdpGx6bQTZqkOMM9SQKBgcnrBRvqWVhuZL8ZABin6GNOG5GEa3W8d75sA" alt="Imagem de fundo 1">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYqODCSywF4nSeJaIikf_oz2ANHPqqpL9VSQ&s" alt="Imagem de fundo 2">
         </div>
-        {% if error %}
-        <div class="error-message">{{ error }}</div>
-        {% endif %}
-        <form method="POST">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+        <div class="login-container">
+            <div class="profile-img">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8sOs5I794SkSOIXmRv1BXKrTyXVkbYs2tg&s" alt="Foto de perfil">
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="remember">
-                <label for="remember">Remember me</label>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <div class="login-footer">
-            <a href="#">Forgot password?</a>
-            <span>Don't have an account? <a href="#">Sign up</a></span>
+            <h2>Login</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Usuário" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Senha" required>
+                </div>
+                <button type="submit">Login</button>
+                <div class="form-group">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+            </form>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='file.js') }}"></script>
 </body>
 </html>

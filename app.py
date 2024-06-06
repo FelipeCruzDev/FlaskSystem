@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, make_response, flash, make_response, jsonify, \
-    session
+from flask import Flask, render_template, url_for, request, redirect, make_response, flash, make_response, jsonify, session
 from model.conexaodb import *
 import psycopg2
 from flask_cors import CORS
@@ -11,6 +10,7 @@ from functools import wraps
 import requests
 import jwt
 from model.main import Main
+
 
 
 app = Flask(__name__)
@@ -27,7 +27,6 @@ SECRET_KEY = 'SECRET_KEY'
      :rtype: str
 """
 
-from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -66,6 +65,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user_id, token = loginhandler.logar("", username, password)
+
         if token is not None:
             id = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             consulta = id.get('id')
